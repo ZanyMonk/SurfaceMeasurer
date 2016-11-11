@@ -3,10 +3,13 @@
 
 #include "solid.h"
 
+const int Solid::defaultNbThreads = 10;
+
 Solid::Solid() {
         nbVertices = 0;
         nbFaces = 0;
         nbEdges = 0;
+        nbThreads = Solid::defaultNbThreads;
 }
 
 Solid::Solid(string filepath) {
@@ -26,12 +29,14 @@ Solid::Solid(string filepath) {
                         nbFaces = stoi(infos[1]);
                         nbEdges = stoi(infos[2]);
 
-                        // cout << "Nombre de sommets : " << nbVertices << endl;
-                        // cout << "Nombre de faces : " << nbFaces << endl;
-                        // cout << "Nombre d'arêtes : " << nbEdges << endl;
+                        cout << "Nombre de sommets : " << nbVertices << endl;
+                        cout << "Nombre de faces : " << nbFaces << endl;
+                        cout << "Nombre d'arêtes : " << nbEdges << endl;
 
+                        cout << "Chargement des sommets ..." << endl;
                         Point	pointBuffer;
                         Face	faceBuffer;
+                        bool    firstFace = true;
                         // Read points and faces definition
                         while(getline(file, line)) {
                                 vector<string> v = splitLine(trimLine(line));
@@ -42,11 +47,16 @@ Solid::Solid(string filepath) {
                                         continue;
                                 }
 
+
                                 // If not, treat the line as
                                 if(line[1] == '.' || line[2] == '.') {	// vertex coords
-                                        pointBuffer.setPosition(v[0], v[1], v[2]);
-                                        points.push_back(pointBuffer);
+                                    pointBuffer.setPosition(v[0], v[1], v[2]);
+                                    points.push_back(pointBuffer);
                                 } else {	// face coords
+                                    if(firstFace) {
+                                        cout << "\rChargement des face ..." << endl;
+                                        firstFace = false;
+                                    }
                                         size_t n = stoi(v[0]);
                                         faceBuffer.clear();
                                         faceBuffer.setVerticesNumber(n);
@@ -91,6 +101,9 @@ string Solid::trimLine(string& s) {
 
 double Solid::computeSurface() {
         double surface = 0.f;
+
+        cout << "On a " << faces.size() << " faces à traiter." << endl;
+        cout << "On peut utiliser " << nbThreads << " threads." << endl;
 
         for(Face f : faces) {
                 surface += f.computeSurface();

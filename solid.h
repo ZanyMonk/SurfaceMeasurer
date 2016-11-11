@@ -4,17 +4,20 @@
 #include <deque>
 #include <iostream>
 #include <vector>
+#include <thread>
 
 #include "point.h"
 #include "face.h"
 
 using namespace std;
 
+
 class Solid {
 private:
-        int nbVertices, nbFaces, nbEdges;
-        deque<Point> points;
-        deque<Face> faces;
+        int nbVertices, nbFaces, nbEdges, nbThreads;
+        deque<Point>    points;
+        deque<Face>     faces;
+        vector<thread>  threads();
 
 public:
         Solid();
@@ -24,6 +27,7 @@ public:
         vector<string>	splitLine(string s);
         string			trimLine(string& s);
         double			computeSurface();
+        static const int defaultNbThreads;
 };
 
 #endif
