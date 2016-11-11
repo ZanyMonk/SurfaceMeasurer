@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "solid.h"
+#include "Solid.h"
 
 Solid::Solid() {
         nbVertices = 0;
@@ -15,7 +15,7 @@ Solid::Solid(string filepath) {
         file.open(filepath);
 
         if(file.is_open()) {
-                getline(file, line); // Check OFF header
+                getline(file, line); // Check first line
                 if(line != "OFF") {
                         cerr << "Bad file format." << endl;
                 } else {
@@ -30,23 +30,22 @@ Solid::Solid(string filepath) {
                         // cout << "Nombre de faces : " << nbFaces << endl;
                         // cout << "Nombre d'arêtes : " << nbEdges << endl;
 
-                        Point	pointBuffer;
-                        Face	faceBuffer;
+                        Point   pointBuffer;
+                        Face    faceBuffer;
                         // Read points and faces definition
                         while(getline(file, line)) {
                                 vector<string> v = splitLine(trimLine(line));
 
-                                // DEV___ à deplacer hors de l'algo de calcul
                                 // Check if line is a comment
                                 if(line[0] == '#') {
                                         continue;
                                 }
 
                                 // If not, treat the line as
-                                if(line[1] == '.' || line[2] == '.') {	// vertex coords
+                                if(isVertex(line)) {    // vertex coords
                                         pointBuffer.setPosition(v[0], v[1], v[2]);
                                         points.push_back(pointBuffer);
-                                } else {	// face coords
+                                } else {        // face coords
                                         size_t n = stoi(v[0]);
                                         faceBuffer.clear();
                                         faceBuffer.setVerticesNumber(n);
@@ -97,4 +96,16 @@ double Solid::computeSurface() {
         }
 
         return surface;
+}
+
+
+bool Solid::isVertex(string &s){
+        if(s[0] == '-' || s[0] == '0' ) return true;
+        size_t i = 0;
+        while(s[i] != ' '){
+                if(s[i] == '.'){
+                        return true;
+                }
+        }
+        return false;
 }

@@ -5,25 +5,26 @@
 #include <iostream>
 #include <vector>
 
-#include "point.h"
-#include "face.h"
+#include "Point.h"
+#include "Face.h"
 
 using namespace std;
 
 class Solid {
 private:
-        int nbVertices, nbFaces, nbEdges;
-        deque<Point> points;
-        deque<Face> faces;
+	int nbVertices, nbFaces, nbEdges;
+	deque<Point> points;
+	deque<Face> faces;
 
 public:
-        Solid();
-        Solid(string filepath);
-        ~Solid();
+	Solid();
+	Solid(string filepath);
+	~Solid();
+	static bool isVertex(string &s);
 
-        vector<string>	splitLine(string s);
-        string			trimLine(string& s);
-        double			computeSurface();
+	vector<string>	splitLine(string s);
+	string			trimLine(string& s);
+	double			computeSurface();
 };
 
 #endif
