@@ -103,8 +103,6 @@ void Solid::computeFaces(int start, int end)
         r += faces[i].computeSurface();
     }
 
-    std::cout << "Add " << r << ". From " << start << " to " << end << std::endl;
-
     resultMutex.lock();
     result += r;
     resultMutex.unlock();
