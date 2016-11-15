@@ -10,7 +10,9 @@ SurfaceMeasurer::SurfaceMeasurer(
 
     solid = new Solid(filePath);
 
-    cout << "This solid surface is " << solid->computeSurfaceWithThreads() << endl;
+	cout << "This solid surface is " << solid->computeSurfaceWithThreads() << endl;
+	cout << "This solid surface is " << solid->computeSurfaceWithOpenMP() << " open mp"<<endl;
+
 }
 
 SurfaceMeasurer::~SurfaceMeasurer() {
