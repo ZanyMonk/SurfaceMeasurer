@@ -3,45 +3,36 @@
 
 #include "solid.h"
 
-const int Solid::defaultNbThreads = 10;
-
-Solid::Solid() {
-        nbVertices = 0;
-        nbFaces = 0;
-        nbEdges = 0;
-        nbThreads = Solid::defaultNbThreads;
-}
-
-Solid::Solid(string filepath) {
-        string line;
-        ifstream file;
+Solid::Solid(std::string filepath, int _nbThreads) {
+        nbThreads = _nbThreads;
+        std::string line;
+        std::ifstream file;
         file.open(filepath);
 
         if(file.is_open()) {
-                getline(file, line); // Check OFF header
+                getline(file, line); // Check first line
                 if(line != "OFF") {
-                        cerr << "Bad file format." << endl;
+                        std::cerr << "Bad file format." << std::endl;
                 } else {
                         // Retrieve number of vertices, faces and edges
                         getline(file, line);
-                        vector<string> infos = splitLine(trimLine(line));
+                        vector<std::string> infos = splitLine(trimLine(line));
                         nbVertices = stoi(infos[0]);
                         nbFaces = stoi(infos[1]);
                         nbEdges = stoi(infos[2]);
 
-                        cout << "Nombre de sommets : " << nbVertices << endl;
-                        cout << "Nombre de faces : " << nbFaces << endl;
-                        cout << "Nombre d'arêtes : " << nbEdges << endl;
+//                        std::cout << "Number of vertices : " << nbVertices << std::endl;
+//                        std::cout << "Number of faces : " << nbFaces << std::endl;
+//                        std::cout << "Number of edges : " << nbEdges << std::endl;
 
-                        cout << "Chargement des sommets ..." << endl;
+                        std::cout << "Loading vertices ..." << std::endl;
                         Point	pointBuffer;
                         Face	faceBuffer;
                         bool    firstFace = true;
                         // Read points and faces definition
                         while(getline(file, line)) {
-                                vector<string> v = splitLine(trimLine(line));
+                                vector<std::string> v = splitLine(trimLine(line));
 
-                                // DEV___ à deplacer hors de l'algo de calcul
                                 // Check if line is a comment
                                 if(line[0] == '#') {
                                         continue;
@@ -49,12 +40,12 @@ Solid::Solid(string filepath) {
 
 
                                 // If not, treat the line as
-                                if(line[1] == '.' || line[2] == '.') {	// vertex coords
+                                if(isVertex(line)) {    // vertex coords
                                     pointBuffer.setPosition(v[0], v[1], v[2]);
                                     points.push_back(pointBuffer);
                                 } else {	// face coords
                                     if(firstFace) {
-                                        cout << "\rChargement des face ..." << endl;
+                                        std::cout << "\rLoading faces ..." << std::endl;
                                         firstFace = false;
                                     }
                                         size_t n = stoi(v[0]);
@@ -68,19 +59,24 @@ Solid::Solid(string filepath) {
                         }
                 }
         } else {
-                cerr << "Couldn't open file at \"" << filepath << "\"." << endl;
+                std::cerr << "Couldn't open file at \"" << filepath << "\"." << std::endl;
         }
 
         file.close();
 }
 
+Solid::Solid(const Solid &src)
+{
+
+}
+
 Solid::~Solid() { }
 
-vector<string> Solid::splitLine(string s) {
-        stringstream stream;
+vector<std::string> Solid::splitLine(std::string s) {
+        std::stringstream stream;
         stream.str(s);
-        vector<string> ret;
-        string buffer;
+        std::vector<std::string> ret;
+        std::string buffer;
 
         while(getline(stream, buffer, ' ')) {
                 if(!buffer.empty()) {
@@ -91,7 +87,7 @@ vector<string> Solid::splitLine(string s) {
         return ret;
 }
 
-string Solid::trimLine(string& s) {
+std::string Solid::trimLine(std::string& s) {
         size_t f = s.find_first_not_of(' ');
         size_t l = s.find_last_not_of(' ');
         s = s.substr(f, l-f+1);
@@ -99,15 +95,66 @@ string Solid::trimLine(string& s) {
         return s;
 }
 
-double Solid::computeSurface() {
-        double surface = 0.f;
+void Solid::computeFaces(int start, int end)
+{
+    double r = 0.f;
 
-        cout << "On a " << faces.size() << " faces à traiter." << endl;
-        cout << "On peut utiliser " << nbThreads << " threads." << endl;
+    for(size_t i = start; i <= end; i++) {
+        r += faces[i].computeSurface();
+    }
+
+    std::cout << "Add " << r << ". From " << start << " to " << end << std::endl;
+
+    resultMutex.lock();
+    result += r;
+    resultMutex.unlock();
+}
+
+double Solid::computeSurface() {
+        result = 0.f;
 
         for(Face f : faces) {
-                surface += f.computeSurface();
+                result += f.computeSurface();
         }
 
-        return surface;
+        return result;
+}
+
+double Solid::computeSurfaceWithThreads()
+{
+    result = 0.f;
+
+    std::vector<std::thread>  threads;
+    int range = faces.size()/nbThreads;
+    int last = 0;
+    for(size_t i = 0; i < nbThreads; i++) {
+        last = (i+1)*range-1;
+        if(last+range > faces.size() && faces.size()-last > 0) {
+            last += faces.size()-last;
+        }
+        threads.push_back(std::thread(&Solid::computeFaces, this, i*range, last));
+    }
+
+    for(std::thread& t : threads) {
+        t.join();
+    }
+
+    return result;
+}
+
+
+
+
+const bool Solid::isVertex(std::string &s){
+        if(s[0] == '-' || s[0] == '0' )
+            return true;
+
+        size_t i = 0;
+        while(s[i] != ' '){
+                if(s[i] == '.')
+                        return true;
+            i++;
+        }
+
+        return false;
 }

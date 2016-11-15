@@ -5,29 +5,36 @@
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <mutex>
 
 #include "point.h"
 #include "face.h"
 
-using namespace std;
-
-
 class Solid {
 private:
-        int nbVertices, nbFaces, nbEdges, nbThreads;
-        deque<Point>    points;
-        deque<Face>     faces;
-        vector<thread>  threads();
+    int                 nbVertices,
+                        nbFaces,
+                        nbEdges,
+                        nbThreads;
+    double              result;
+    std::deque<Point>   points;
+    std::deque<Face>    faces;
+
+    std::vector<std::string>    splitLine(std::string s);
+    std::string                 trimLine(std::string& s);
+    void                        computeFaces(int start, int end);
 
 public:
-        Solid();
-        Solid(string filepath);
-        ~Solid();
+    static const bool   isVertex(std::string &s);
+    mutable std::mutex          resultMutex;
 
-        vector<string>	splitLine(string s);
-        string			trimLine(string& s);
-        double			computeSurface();
-        static const int defaultNbThreads;
+	Solid();
+    Solid(std::string filepath, int _nbThreads = 10);
+    Solid(const Solid& src);
+	~Solid();
+
+    double                      computeSurface();
+    double                      computeSurfaceWithThreads();
 };
 
 #endif
