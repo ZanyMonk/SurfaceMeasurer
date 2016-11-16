@@ -4,14 +4,18 @@ const int SurfaceMeasurer::defaultNbThreads = 10;
 
 SurfaceMeasurer::SurfaceMeasurer(
         std::string filePath,
-        unsigned nbThreads
+        unsigned nbThreads,
+        bool openMP
 ) {
     solid = new Solid(filePath);
     double r;
 
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
-    if(nbThreads == 0) {
+    if(openMP) {
+        cout << "Using OpenMP" << endl;
+        r = solid->computeSurfaceWithOpenMP();
+    } else if(nbThreads == 0) {
         r = solid->computeSurface();
     } else {
         std::cout << "Calculating with " << nbThreads << " threads." << std::endl;

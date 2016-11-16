@@ -23,7 +23,6 @@ private:
 
     std::vector<std::string>    splitLine(std::string s);
     std::string                 trimLine(std::string& s);
-//    void*                       computeFaces(void* data);
 
 public:
     static const bool           isVertex(std::string &s);
@@ -31,15 +30,11 @@ public:
 
 	Solid();
     Solid(std::string filepath);
-//    Solid(const Solid& src);
 	~Solid();
 
     double                      computeSurface();
     double                      computeSurfaceWithThreads(int nbThreads);
-};
-
-struct ThreadResult {
-    std::deque<Face*>   faces;
+	double						computeSurfaceWithOpenMP();
 };
 
 #endif

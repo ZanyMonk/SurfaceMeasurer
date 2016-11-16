@@ -15,7 +15,7 @@ public:
     static const int    defaultNbThreads;
 
     SurfaceMeasurer();
-    SurfaceMeasurer(std::string filePath, unsigned nbThreads);
+    SurfaceMeasurer(std::string filePath, unsigned nbThreads, bool openMP);
     ~SurfaceMeasurer();
 
     static void usage();

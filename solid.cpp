@@ -2,6 +2,8 @@
 #include <sstream>
 
 #include "solid.h"
+#include <omp.h>
+
 
 void* computeFaces(void* data)
 {
@@ -160,19 +162,27 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
     return result;
 }
 
+double Solid::computeSurfaceWithOpenMP(){
+    double result = 0.f;
+	#pragma omp parallel for reduction ( + : result )
+		for(long i = 0; i<= faces.size();i++) {
+			result += faces[i].computeSurface();
+		}
+
+    return result;
+}
+
 
 
 
 const bool Solid::isVertex(std::string &s){
         if(s[0] == '-' || s[0] == '0' )
             return true;
-
-        size_t i = 0;
-        while(s[i] != ' '){
-                if(s[i] == '.')
-                        return true;
-            i++;
+	size_t i = 0;
+		while(s[i] != ' '){
+			if(s[i] == '.')
+					return true;
+			i++;
         }
-
         return false;
 }
