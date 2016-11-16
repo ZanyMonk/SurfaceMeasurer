@@ -35,6 +35,7 @@ public:
 
     double                      computeSurface();
     double                      computeSurfaceWithThreads();
+	double						computeSurfaceWithOpenMP();
 };
 
 #endif
