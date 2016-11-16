@@ -4,8 +4,10 @@
 #include <deque>
 #include <iostream>
 #include <vector>
-#include <thread>
-#include <mutex>
+#include <cstdlib>
+#include <pthread.h>
+//#include <thread>
+//#include <mutex>
 
 #include "point.h"
 #include "face.h"
@@ -16,25 +18,28 @@ private:
                         nbFaces,
                         nbEdges,
                         nbThreads;
-    double              result;
     std::deque<Point>   points;
     std::deque<Face>    faces;
 
     std::vector<std::string>    splitLine(std::string s);
     std::string                 trimLine(std::string& s);
-    void                        computeFaces(int start, int end);
+//    void*                       computeFaces(void* data);
 
 public:
-    static const bool   isVertex(std::string &s);
-    mutable std::mutex          resultMutex;
+    static const bool           isVertex(std::string &s);
+    static pthread_mutex_t      resultMutex;
 
 	Solid();
-    Solid(std::string filepath, int _nbThreads = 10);
-    Solid(const Solid& src);
+    Solid(std::string filepath);
+//    Solid(const Solid& src);
 	~Solid();
 
     double                      computeSurface();
-    double                      computeSurfaceWithThreads();
+    double                      computeSurfaceWithThreads(int nbThreads);
+};
+
+struct ThreadResult {
+    std::deque<Face*>   faces;
 };
 
 #endif

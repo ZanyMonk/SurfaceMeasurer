@@ -4,13 +4,23 @@ const int SurfaceMeasurer::defaultNbThreads = 10;
 
 SurfaceMeasurer::SurfaceMeasurer(
         std::string filePath,
-        int nbThreads = defaultNbThreads
+        unsigned nbThreads
 ) {
-    cout << "With " << nbThreads << " threads." << endl;
-
     solid = new Solid(filePath);
+    double r;
 
-    cout << "This solid surface is " << solid->computeSurfaceWithThreads() << endl;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+    if(nbThreads == 0) {
+        r = solid->computeSurface();
+    } else {
+        std::cout << "Calculating with " << nbThreads << " threads." << std::endl;
+        r = solid->computeSurfaceWithThreads(nbThreads);
+    }
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end-start;
+    std::cout << "This solid surface is " << r << std::endl
+              << "Done in " << elapsed.count() << "s" << std::endl;
 }
 
 SurfaceMeasurer::~SurfaceMeasurer() {

@@ -3,8 +3,18 @@
 
 #include "solid.h"
 
-Solid::Solid(std::string filepath, int _nbThreads) {
-        nbThreads = _nbThreads;
+void* computeFaces(void* data)
+{
+    double* r = new double(0.f);
+    std::deque<Face*>* faces = (std::deque<Face*>*)data;
+    for(size_t i = 0; i < faces->size(); i++) {
+        (*r) += faces->at(i)->computeSurface();
+    }
+
+    return r;
+}
+
+Solid::Solid(std::string filepath) {
         std::string line;
         std::ifstream file;
         file.open(filepath);
@@ -65,10 +75,10 @@ Solid::Solid(std::string filepath, int _nbThreads) {
         file.close();
 }
 
-Solid::Solid(const Solid &src)
-{
+//Solid::Solid(const Solid &src)
+//{
 
-}
+//}
 
 Solid::~Solid() { }
 
@@ -95,21 +105,8 @@ std::string Solid::trimLine(std::string& s) {
         return s;
 }
 
-void Solid::computeFaces(int start, int end)
-{
-    double r = 0.f;
-
-    for(size_t i = start; i <= end; i++) {
-        r += faces[i].computeSurface();
-    }
-
-    resultMutex.lock();
-    result += r;
-    resultMutex.unlock();
-}
-
 double Solid::computeSurface() {
-        result = 0.f;
+        double result = 0.f;
 
         for(Face f : faces) {
                 result += f.computeSurface();
@@ -118,23 +115,46 @@ double Solid::computeSurface() {
         return result;
 }
 
-double Solid::computeSurfaceWithThreads()
+double Solid::computeSurfaceWithThreads(int nbThreads)
 {
-    result = 0.f;
+    cout << "Start " << nbThreads << " threads." << endl;
 
-    std::vector<std::thread>  threads;
+    double result = 0.f;
+
+    std::vector<pthread_t>          threads(nbThreads);
+    std::vector<std::deque<Face*>*> facesBunch;
+
+    // Build sections for each thread
     int range = faces.size()/nbThreads;
     int last = 0;
     for(size_t i = 0; i < nbThreads; i++) {
         last = (i+1)*range-1;
-        if(last+range > faces.size() && faces.size()-last > 0) {
-            last += faces.size()-last;
+        if(last+range >= faces.size() && faces.size()-last > 0) {
+            last += faces.size()-last-1;
         }
-        threads.push_back(std::thread(&Solid::computeFaces, this, i*range, last));
+
+        facesBunch.push_back(new std::deque<Face*>());
+        size_t f = 0;
+        for(size_t j = i*range; j <= last; j++) {
+            facesBunch[i]->push_back(new Face());
+            facesBunch[i]->at(f) = &faces.at(j);
+            f++;
+        }
+
     }
 
-    for(std::thread& t : threads) {
-        t.join();
+    // Start threads
+    for(size_t i = 0; i < nbThreads; i++) {
+        pthread_create(&threads[i], NULL, computeFaces, (void*)facesBunch[i]);
+    }
+
+    // Get results back and sum them
+    void* r;
+    double* res;
+    for(pthread_t& t : threads) {
+        pthread_join(t, &r);
+        res = (double*)r;
+        result += (*res);
     }
 
     return result;
