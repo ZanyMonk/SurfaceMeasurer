@@ -7,17 +7,17 @@
 
 class Face {
 private:
-        size_t 			nbVertices = 0;
-        vector<Point>	vertices;
+    size_t 			nbVertices = 0;
+    vector<Point>	vertices;
 
 public:
-        Face();
-        ~Face();
+    Face();
+    ~Face();
 
-        void	clear();
-        void	setVerticesNumber(size_t n);
-        void	addVertex(Point p);
-        double	computeSurface();
+    void	clear();
+    void	setVerticesNumber(size_t n);
+    void	addVertex(Point p);
+    double	computeSurface();
 };
 
 #endif

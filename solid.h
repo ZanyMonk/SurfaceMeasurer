@@ -6,8 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <pthread.h>
-//#include <thread>
-//#include <mutex>
+#include <omp.h>
 
 #include "point.h"
 #include "face.h"

@@ -7,17 +7,17 @@ using namespace std;
 
 class Point {
 public:
-        double x, y, z;
+    double x, y, z;
 
-        Point();
-        Point(double _x, double _y, double _z);
-        ~Point();
+    Point();
+    Point(double _x, double _y, double _z);
+    ~Point();
 
-        void setPosition(double _x, double _y, double _z);
-        void setPosition(string _x, string _y, string _z);
-        double distanceFrom(Point* p);
+    void setPosition(double _x, double _y, double _z);
+    void setPosition(string _x, string _y, string _z);
+    double distanceFrom(Point* p);
 
-        friend std::ostream&  operator<<(std::ostream&, const Point&);
+    friend std::ostream&  operator<<(std::ostream&, const Point&);
 };
 
 #endif
