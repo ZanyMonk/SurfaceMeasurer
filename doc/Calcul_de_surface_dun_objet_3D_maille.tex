@@ -1,0 +1,86 @@
+\documentclass[12pt]{article}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+
+\title{Calcul de surface d'un objet 3D maillé}
+\author{Lucien Aubert $\newline$ Thibaut Jallois}
+
+\makeatletter
+\let\thetitle\@title
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\chead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+    \vspace*{0.5 cm}
+    \includegraphics[scale = 0.15]{logo-amu.png}\\[1.0 cm]	% University Logo
+    \textsc{\LARGE Aix-Marseille Université}\\[2.0 cm]
+	\textsc{\Large M3101- Systèmes d'exploitation}\\[0.5 cm]
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+			\emph{Auteurs :}\\
+			\theauthor
+			\end{flushleft}
+			\end{minipage}~
+			\begin{minipage}{0.4\textwidth}
+			\begin{flushright} \large
+			\emph{Professeur :} \\
+			Romain Raffin
+		\end{flushright}
+	\end{minipage}\\[2 cm]
+
+	{\large \thedate}\\[2 cm]
+
+	\vfill
+
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+\pagebreak
+
+\section{Introduction}
+% Présentation du "problème" + sitographie
+
+\section{Environnement d'expérimentation}
+% config de la machine de test
+
+\section{Algorithmique et implémentation}
+	\subsection{Algorithme séquentiel}
+		\subsubsection{Conception}
+		\subsubsection{Résultats}
+% Algorithme séquentiel
+	% Résultats
+
+	\subsection{Algorithmes parallèles}
+		\subsubsection{Threads}
+			\paragraph{Conception}
+			\paragraph{Résultats}
+		\subsubsection{OpenMP}
+			\paragraph{Conception}
+			\paragraph{Résultats}
+% Explication du parallélisme utilisé pour les deux méthodes
+	% Résultats
+
+\section{Conclusion}
+% Conclusion et conjecture
+
+\end{document}

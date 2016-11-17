@@ -154,10 +154,11 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
 
 double Solid::computeSurfaceWithOpenMP(){
     double result = 0.f;
+
 	#pragma omp parallel for reduction ( + : result )
-		for(long i = 0; i<= faces.size();i++) {
-			result += faces[i].computeSurface();
-		}
+    for(long i = 0; i<= faces.size();i++) {
+        result += faces[i].computeSurface();
+    }
 
     return result;
 }
