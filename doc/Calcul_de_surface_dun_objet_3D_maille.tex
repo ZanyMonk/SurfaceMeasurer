@@ -52,35 +52,52 @@
 
 \end{titlepage}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \tableofcontents
 \pagebreak
 
 \section{Introduction}
-% Présentation du "problème" + sitographie
+L'objectif consiste en l'optimisation, par parallèlisation, du calcul de la surface d'un objet 3D maillé (triangles) au format OFF\cite{OFF} à l'aide de la formule de Héron\cite{heron}.
+
+Le programme implémente trois algorithmes
+\begin{itemize}
+	\item Classique, séquentiel
+	\item Avec \texttt{pthread}\cite{pthreads}, parallélisé
+	\item Avec \texttt{OpenMP}, parallélisé également
+\end{itemize}
 
 \section{Environnement d'expérimentation}
-% config de la machine de test
+La phase de test s'est déroulée sur trois machines dont voici les configurations
+
+\subsection{Machine 1}
+\texttt{Intel i7-3612QM 2.10GHz, 8 CPU, 4 cœurs, L1 64K, L2 256K, L3 6144K}
+
+\texttt{12Go RAM DDR3 800MHz}
+
+\subsection{Machine 2}
+Machine Thibaut
+
+\subsection{Machine 3}
+Machine IUT
 
 \section{Algorithmique et implémentation}
 	\subsection{Algorithme séquentiel}
 		\subsubsection{Conception}
 		\subsubsection{Résultats}
-% Algorithme séquentiel
-	% Résultats
 
 	\subsection{Algorithmes parallèles}
 		\subsubsection{Threads}
 			\paragraph{Conception}
 			\paragraph{Résultats}
+			
 		\subsubsection{OpenMP}
 			\paragraph{Conception}
 			\paragraph{Résultats}
-% Explication du parallélisme utilisé pour les deux méthodes
-	% Résultats
 
 \section{Conclusion}
 % Conclusion et conjecture
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{biblio}
 
 \end{document}
