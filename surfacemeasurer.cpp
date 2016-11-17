@@ -7,11 +7,12 @@ SurfaceMeasurer::SurfaceMeasurer(
         unsigned nbThreads,
         bool openMP
 ) {
+    std::chrono::time_point<std::chrono::system_clock> start, startProcess, end;
+    start = std::chrono::system_clock::now();
     solid = new Solid(filePath);
     double r;
 
-    std::chrono::time_point<std::chrono::system_clock> start, end;
-    start = std::chrono::system_clock::now();
+    startProcess = std::chrono::system_clock::now();
     if(openMP) {
         cout << "Using OpenMP" << endl;
         r = solid->computeSurfaceWithOpenMP();
@@ -23,8 +24,13 @@ SurfaceMeasurer::SurfaceMeasurer(
     }
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end-start;
+    std::chrono::duration<double> elapsedProcess = end-startProcess;
+    std::cout.setf(ios::fixed);
     std::cout << "This solid surface is " << r << std::endl
-              << "Done in " << elapsed.count() << "s" << std::endl;
+              << "Processing time :  " << elapsedProcess.count() << "s" << std::endl
+              << "Loading time :     " << elapsed.count()-elapsedProcess.count() << "s" << std::endl
+              << "Total time :       " << elapsed.count() << "s" << std::endl
+              << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 }
 
 SurfaceMeasurer::~SurfaceMeasurer() {
