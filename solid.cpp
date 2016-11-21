@@ -154,7 +154,7 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
 
 double Solid::computeSurfaceWithOpenMP(){
     double result = 0.f;
-
+    //Combined Parallel Loop Reduction
 	#pragma omp parallel for reduction ( + : result )
     for(long i = 0; i<= faces.size();i++) {
         result += faces[i].computeSurface();
@@ -168,11 +168,10 @@ const bool Solid::isVertex(std::string &s){
         return true;
 
 	size_t i = 0;
+    //Check if the first number is a float
     while(s[i] != ' '){
-        if(s[i] == '.')
-                return true;
+        if(s[i] == '.') return true;
         i++;
     }
-
     return false;
 }
