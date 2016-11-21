@@ -12,8 +12,8 @@
 	bookmarksdepth=paragraph
 }
 \usepackage[cyr]{aeguill}
-\usepackage[francais]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{parskip}
@@ -31,7 +31,6 @@
 \fancyhf{}
 \chead{\thetitle}
 \cfoot{\thepage}
-
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,25 +45,22 @@
 	{ \huge \bfseries \thetitle}\\
 	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
 
-	\begin{minipage}{0.4\textwidth}
+	\begin{minipage}[t]{0.4\textwidth}
 		\begin{flushleft} \large
 			\emph{Auteurs :}\\
 			\theauthor
 			\end{flushleft}
 			\end{minipage}~
-			\begin{minipage}{0.4\textwidth}
+			\begin{minipage}[t]{0.4\textwidth}
 			\begin{flushright} \large
 			\emph{Enseignant :} \\
 			Romain Raffin
 		\end{flushright}
 	\end{minipage}\\[2 cm]
 
-	{\large \thedate}\\[2 cm]
-
 	\vfill
 
 \end{titlepage}
-
 \tableofcontents
 \pagebreak
 
@@ -83,7 +79,6 @@ La phase de test s'est déroulée sur trois machines dont voici les configuratio
 
 \subsection{Machine 1}
 \texttt{Intel i7-3612QM 2.10GHz, 8 CPU, 4 cœurs, L1 64K, L2 256K, L3 6144K}
-
 \texttt{12Go RAM DDR3 800MHz}
 
 \subsection{Machine 2}
