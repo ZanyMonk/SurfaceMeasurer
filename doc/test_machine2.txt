@@ -1,0 +1,82 @@
+Locomotive:
+
+    Thread:
+        Calculating with 10 threads.
+        Start 10 threads.
+        This solid surface is 98906488.770016
+        Processing time :  0.056329s
+        Loading time :     0.732834s
+        Total time :       0.789163s
+        
+    Séquentiel:
+        This solid surface is 98906488.770017
+        Processing time :  0.084846s
+        Loading time :     0.726923s
+        Total time :       0.811769s
+    Using OpenMP
+        This solid surface is 98906488.770017
+        Processing time :  0.056374s
+        Loading time :     0.714972s
+        Total time :       0.771346s
+
+man.off:
+    Thread:
+        Start 10 threads.
+        This solid surface is 60057586.092125
+        Processing time :  0.193346s
+        Loading time :     2.512367s
+        Total time :       2.705713s
+    Séquentiel:
+        This solid surface is 60057586.092125
+        Processing time :  0.291363s
+        Loading time :     2.487574s
+        Total time :       2.778938s
+    OpenMp:
+        This solid surface is 60057586.092125
+        Processing time :  0.196070s
+        Loading time :     2.554234s
+        Total time :       2.750305s
+
+sphere.off:
+    Thread:
+        Start 10 threads.
+        This solid surface is 2104.026475
+        Processing time :  0.001084s
+        Loading time :     0.000451s
+        Total time :       0.001535s
+    Séquentiel:     
+        This solid surface is 2104.026475
+        Processing time :  0.000048s
+        Loading time :     0.000435s
+        Total time :       0.000483s
+    Using OpenMP
+        This solid surface is 2104.026475
+        Processing time :  0.000038s
+        Loading time :     0.000451s
+        Total time :       0.000490s
+            
+teapot.off:
+    
+    Calculating with 10 threads.
+    Start 10 threads.
+    This solid surface is 26489.165881
+    Processing time :  0.002081s
+    Loading time :     0.014955s
+    Total time :       0.017036s
+    
+
+    This solid surface is 26489.165881
+    Processing time :  0.001928s
+    Loading time :     0.015645s
+    Total time :       0.017573s
+
+    Using OpenMP
+    This solid surface is 26489.165881
+    Processing time :  0.001105s
+    Loading time :     0.015584s
+    Total time :       0.016689s
+
+        
+    
+    
+    
