@@ -13,16 +13,15 @@ void* computeFaces(void* data)
         (*r) += Face::computeArea(faces->at(i));
     }
 
-
     delete faces;
 
     return r;
 }
 
-Solid::Solid(std::string filepath) {
+Solid::Solid(std::string filePath) {
     std::string line;
     std::ifstream file;
-    file.open(filepath);
+    file.open(filePath);
 
     if(file.is_open()) {
         getline(file, line); // Check first line
@@ -31,7 +30,7 @@ Solid::Solid(std::string filepath) {
         } else {
             // Retrieve number of vertices, faces and edges
             getline(file, line);
-            vector<std::string> infos = splitLine(trimLine(line));
+            std::vector<std::string> infos = splitLine(trimLine(line));
             nbVertices = stoi(infos[0]);
             nbFaces = stoi(infos[1]);
             nbEdges = stoi(infos[2]);
@@ -40,14 +39,15 @@ Solid::Solid(std::string filepath) {
             Point	pointBuffer;
             Face	faceBuffer;
             bool    firstFace = true;
+
             // Read points and faces definition
             while(getline(file, line)) {
-                vector<std::string> v = splitLine(trimLine(line));
-
                 // Check if line is a comment
                 if(line[0] == '#') {
                         continue;
                 }
+
+                std::vector<std::string> v = splitLine(trimLine(line));
 
                 // If not, treat the line as
                 if(isVertex(line)) {    // vertex coords
@@ -62,15 +62,16 @@ Solid::Solid(std::string filepath) {
                     size_t n = stoi(v[0]);
                     faceBuffer.clear();
                     faceBuffer.setVerticesNumber(n);
-                    for (size_t i = n; i > 0; i--) {
+                    for (size_t i = n+1; i > 1; i--) {
                         faceBuffer.addVertex(&points[stoi(v[i-1])]);
                     }
+                    std::cout  << std::endl;
                     faces.push_back(faceBuffer);
                 }
             }
         }
     } else {
-            std::cerr << "Couldn't open file at \"" << filepath << "\"." << std::endl;
+            std::cerr << "Couldn't open file at \"" << filePath << "\"." << std::endl;
     }
 
     file.close();
@@ -78,7 +79,7 @@ Solid::Solid(std::string filepath) {
 
 Solid::~Solid() { }
 
-vector<std::string> Solid::splitLine(std::string s) {
+std::vector<std::string> Solid::splitLine(std::string s) {
     std::stringstream stream;
     stream.str(s);
     std::vector<std::string> ret;
@@ -111,7 +112,7 @@ double Solid::computeSurface() {
     return result;
 }
 
-double Solid::computeSurfaceWithThreads(int nbThreads)
+double Solid::computeSurfaceWithThreads(unsigned nbThreads)
 {
     double result = 0.f;
 
@@ -184,5 +185,9 @@ const bool Solid::isVertex(std::string &s){
         if(s[i] == '.') return true;
         i++;
     }
+
+    if(stoi(s) > 3)
+        return true;
+
     return false;
 }

@@ -125,6 +125,13 @@ private:
 
 		On somme l'aire de chaque triangle du volume, calculée à l'aide de la formule de Héron, ce qui nous donne la surface totale du volume.
 		\subsubsection{Conception}
+		\paragraph{Diagramme de classes}
+
+		\begin{center}
+			\includegraphics[scale = 0.37]{class_diagram.png}
+		\end{center}
+
+		\subsubsection{Calcul d'aire par la formule de Héron}
 		Dans la formule de Héron $S = \sqrt{p(p-a)(p-b)(p-c)}$ nous avons besoin des longueurs des côtés de chaque triangle. La méthode \texttt{Point::distanceFrom(Point*)} nous permet donc d'obtenir les termes $a$, $b$ et $c$.
 		\begin{lstlisting}
 double Point::distanceFrom(Point* p) {
@@ -224,7 +231,7 @@ for(long i = 0; i < faces.size(); i++) {
 \section{Conclusion}
 D'après les tests que nous avons effectués, nous constatons que le temps de calcul est réduit lors de la parallélisation par threads, le temps d'exécution étant amélioré plus le nombre d'itération (nombre de faces à traiter) est grand.
 
-\paragraph{Nottons} que le temps passé à découper le conteneur de faces pour les distribuer aux threads (et, on peut légitimement penser que le scénario est similaire pour l'implémentation OpenMP) est compris dans le temps d'exécution car il est nécessaire au calcul avec threads mais pas au mode séquentiel. 
+\paragraph{Nottons} que le temps passé à découper le conteneur de faces pour les distribuer aux threads (et, on peut légitimement penser que le scénario est similaire pour l'implémentation OpenMP) est compris dans le temps d'exécution car il est nécessaire au calcul avec threads mais pas au mode séquentiel.
 
 L'implémentation OpenMP ne semble pas appropriée à cette tâche au vu des temps d'exécution équivalents ou peu meilleurs comparées à ceux de l'implémentation séquentielle.
 

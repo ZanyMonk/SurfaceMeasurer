@@ -8,7 +8,7 @@
 class Face {
 private:
     size_t 			nbVertices = 0;
-    vector<Point*>	vertices;
+    std::vector<Point*>	vertices;
 
 public:
     Face();
@@ -21,8 +21,8 @@ public:
 
     inline size_t size() { return nbVertices; }
     inline Point* back() { return vertices.back(); }
-    inline vector<Point*>::const_iterator begin() { return vertices.cbegin(); }
-    inline vector<Point*>::const_iterator end() { return vertices.cend(); }
+    inline std::vector<Point*>::const_iterator begin() { return vertices.cbegin(); }
+    inline std::vector<Point*>::const_iterator end() { return vertices.cend(); }
 };
 
 #endif

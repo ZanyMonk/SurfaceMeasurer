@@ -13,7 +13,7 @@
 
 class Solid {
 private:
-    int                 nbVertices,
+    unsigned            nbVertices,
                         nbFaces,
                         nbEdges,
                         nbThreads;
@@ -24,15 +24,16 @@ private:
     std::string                 trimLine(std::string& s);
 
 public:
-    static const bool           isVertex(std::string &s);
     static pthread_mutex_t      resultMutex;
 
+    static const bool           isVertex(std::string &s);
+
 	Solid();
-    Solid(std::string filepath);
+    Solid(std::string filePath);
 	~Solid();
 
     double                      computeSurface();
-    double                      computeSurfaceWithThreads(int nbThreads);
+    double                      computeSurfaceWithThreads(unsigned nbThreads);
 	double						computeSurfaceWithOpenMP();
 };
 

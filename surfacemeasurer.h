@@ -10,7 +10,7 @@
 class SurfaceMeasurer
 {
 private:
-    Solid* solid;
+    Solid solid;
 
 public:
     static const int    defaultNbThreads;

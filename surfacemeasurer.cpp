@@ -6,13 +6,14 @@ const int SurfaceMeasurer::defaultNbThreads = 10;
 SurfaceMeasurer::SurfaceMeasurer(
     std::string filePath,
     unsigned nbThreads
-) {
+)
+    :solid(filePath)
+{
     std::chrono::time_point<std::chrono::system_clock> start, startProcess, end;
 
     start = std::chrono::system_clock::now();
 
     // Load solid data
-    solid = new Solid(filePath);
     double r;
 
     startProcess = std::chrono::system_clock::now();
@@ -20,12 +21,12 @@ SurfaceMeasurer::SurfaceMeasurer(
     // Process data
     if(omp) {
         verbose && std::cout << "Using OpenMP" << std::endl;
-        r = solid->computeSurfaceWithOpenMP();
+        r = solid.computeSurfaceWithOpenMP();
     } else if(nbThreads == 0) {
-        r = solid->computeSurface();
+        r = solid.computeSurface();
     } else {
         verbose && std::cout << "Calculating with " << nbThreads << " threads." << std::endl;
-        r = solid->computeSurfaceWithThreads(nbThreads);
+        r = solid.computeSurfaceWithThreads(nbThreads);
     }
 
     end = std::chrono::system_clock::now();
@@ -33,7 +34,7 @@ SurfaceMeasurer::SurfaceMeasurer(
     std::chrono::duration<double> elapsed = end-start;
     std::chrono::duration<double> elapsedProcess = end-startProcess;
 
-    std::cout.setf(ios::fixed);
+    std::cout.setf(std::ios::fixed);
     if(verbose) {
         std::cout << "This solid surface is " << r << std::endl;
     } else {
@@ -45,11 +46,7 @@ SurfaceMeasurer::SurfaceMeasurer(
                         << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 }
 
-SurfaceMeasurer::~SurfaceMeasurer() {
-    if(solid) {
-        delete solid;
-    }
-}
+SurfaceMeasurer::~SurfaceMeasurer() { }
 
 void SurfaceMeasurer::usage() {
     std::cout << "SurfaceMeasurer" << std::endl;

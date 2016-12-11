@@ -4,8 +4,6 @@
 #include <iostream>
 #include <cmath>
 
-using namespace std;
-
 class Point {
 public:
     double x, y, z;
@@ -15,7 +13,7 @@ public:
     ~Point();
 
     void setPosition(double _x, double _y, double _z);
-    void setPosition(string _x, string _y, string _z);
+    void setPosition(std::string _x, std::string _y, std::string _z);
     double distanceFrom(Point* p);
 
     friend std::ostream&  operator<<(std::ostream&, const Point&);

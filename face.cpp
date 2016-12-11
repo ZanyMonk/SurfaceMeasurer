@@ -36,6 +36,8 @@ double Face::computeArea(Face *face) {
         i++;
     }
 
+    std::cout << " 0: " << distances[0]<< " 1: " << distances[1]<< " 2: " << distances[2] << std::endl;
+
     area /= 2.f;
     double p = area;
 
