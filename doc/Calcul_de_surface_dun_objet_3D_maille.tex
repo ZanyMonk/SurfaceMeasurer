@@ -76,39 +76,40 @@ Le programme implémente trois algorithmes
 La phase de test s'est déroulée sur trois machines dont voici les configurations
 
 \subsection{Machine 1}
-\subsubsection{Configuration}
 \texttt{Intel i7-3612QM 2.10GHz, 8 CPU, 4 cœurs, L1 64K, L2 256K, L3 6144K}
 \texttt{12Go RAM DDR3 800MHz}
 
-\subsubsection{Analyse}
-\begin{center}
-\includegraphics[scale = 0.7]{graph_execTime_machine1.png}
-\end{center}
-
 \subsection{Machine 2}
-\subsubsection{Configuration}
 \texttt{AMD FX(tm)-8350 4.20GHz, 8 CPU, 4 cœurs, L1 64K, L2 2048K, L3 8192K}
 \texttt{8Go RAM DDR3 2133MHz}
 
 \subsection{Machine 3}
-\subsubsection{Configuration}
 \texttt{Intel i5-4590 3.30GHz, 4 CPU, 4 cœurs, L1 32K, L2 256K, L3 6144K}
 \texttt{8Go RAM DDR3 1600MHz}
 
 \section{Algorithmique et implémentation}
 	\subsection{Algorithme séquentiel}
+		De manière à pouvoir travailler sur les données contenues dans les fichier OFF on lit ce fichier et on place chaque sommet et chaque face dans deux \texttt{std::deque}.
+
+		On somme l'aire de chaque triangle du volume, calculée à l'aide de la formule de Héron, ce qui nous donne la surface totale du volume.
 		\subsubsection{Conception}
-		\subsubsection{Résultats}
+		Dans la formule de Héron $S = \sqrt{p(p-a)(p-b)(p-c)}$ nous avons besoin des longueurs des côtés de chaque triangle. La méthode \texttt{Point::distanceFrom(Point*)} nous permet donc d'obtenir les termes $a$, $b$ et $c$.
+
+		Ces termes sont également utilisés pour calculer $\displaystyle p = \frac{a+b+c}{2}$
 
 	\subsection{Algorithmes parallèles}
 		\subsubsection{Threads}
-			\paragraph{Conception}
-			\paragraph{Résultats}
+		Le \texttt{std::deque} de faces est décomposé en $n$ sous-ensembles correspondants au faces sur lesquelles chaque thread va travailler.
+
+		On lance les thread en leur donnant l'adresse de la fonction \texttt{computeSurface(void*)} puis on somme leur sortie en attendant la fin de leur exécution grâce à la fonction \texttt{pthread\_join(pthread\_t, void**)}
 
 		\subsubsection{OpenMP}
-			\paragraph{Conception}
-			\paragraph{Résultats}
+		Il n'y a pas grand chose à faire pour utiliser OpenMP. L'ajout d'un \texttt{\#pragma} suffit à paralléliser la boucle \texttt{for} qui somme les valeurs de chaque triangle.
 
+\section{Résultats}
+	\begin{center}
+		\includegraphics[scale = 0.7]{graph_execTime_machine1.png}
+	\end{center}
 \section{Conclusion}
 % Conclusion et conjecture
 
