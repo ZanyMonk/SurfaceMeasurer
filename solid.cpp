@@ -128,6 +128,7 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
 
     for(size_t i = 0; i < nbThreads; i++) {
         last = (i+1)*range-1;
+
         if(last+range >= faces.size() && faces.size()-last > 0) {
             last += faces.size()-last-1;
         }

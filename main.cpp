@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    int nbThreads = SurfaceMeasurer::defaultNbThreads;
+    int nbThreads = 0;
     bool openMP = false;
 
     for(size_t i = 1; i < argc; i++) {
