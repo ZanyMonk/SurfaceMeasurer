@@ -8,7 +8,7 @@
 class Face {
 private:
     size_t 			nbVertices = 0;
-    vector<Point>	vertices;
+    vector<Point*>	vertices;
 
 public:
     Face();
@@ -16,7 +16,7 @@ public:
 
     void	clear();
     void	setVerticesNumber(size_t n);
-    void	addVertex(Point p);
+    void	addVertex(Point* p);
     double	computeSurface();
 };
 

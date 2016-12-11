@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <fstream>
 #include <cstring>
 
@@ -23,7 +25,6 @@ int main(int argc, char** argv) {
         } else if(strcmp("-t", argv[i]) == 0) {
             nbThreads = atoi(argv[i+1]);
         }
-
     }
 
     return 0;

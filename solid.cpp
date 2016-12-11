@@ -12,6 +12,8 @@ void* computeFaces(void* data)
         (*r) += faces->at(i)->computeSurface();
     }
 
+    delete faces;
+
     return r;
 }
 
@@ -59,7 +61,7 @@ Solid::Solid(std::string filepath) {
                     faceBuffer.clear();
                     faceBuffer.setVerticesNumber(n);
                     for (size_t i = n; i > 0; i--) {
-                        faceBuffer.addVertex(points[stoi(v[i-1])]);
+                        faceBuffer.addVertex(&points[stoi(v[i-1])]);
                     }
                     faces.push_back(faceBuffer);
                 }
@@ -128,8 +130,7 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
         facesBunch.push_back(new std::deque<Face*>());
         size_t f = 0;
         for(size_t j = i*range; j <= last; j++) {
-            facesBunch[i]->push_back(new Face());
-            facesBunch[i]->at(f) = &faces.at(j);
+            facesBunch[i]->push_back(&faces.at(j));
             f++;
         }
 
@@ -142,11 +143,14 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
 
     // Get results back and sum them
     void* r;
-    double* res;
     for(pthread_t& t : threads) {
+        double* res;
+
         pthread_join(t, &r);
         res = (double*)r;
         result += (*res);
+
+        delete res;
     }
 
     return result;
@@ -154,6 +158,7 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
 
 double Solid::computeSurfaceWithOpenMP(){
     double result = 0.f;
+
     //Combined Parallel Loop Reduction
 	#pragma omp parallel for reduction ( + : result )
     for(long i = 0; i<= faces.size();i++) {

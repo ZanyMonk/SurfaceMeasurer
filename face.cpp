@@ -14,7 +14,7 @@ void Face::setVerticesNumber(size_t n) {
     nbVertices = n;
 }
 
-void Face::addVertex(Point p) {
+void Face::addVertex(Point *p) {
     if(vertices.size() < nbVertices) {
         vertices.push_back(p);
     } else {
@@ -25,10 +25,10 @@ void Face::addVertex(Point p) {
 double Face::computeSurface() {
     double surface = 0;
 
-    Point* last = &vertices.back();
-    for(vector<Point>::iterator it = vertices.begin(); it != vertices.end(); ++it) {
-        surface += it->distanceFrom(last);
-        last = &(*it);
+    Point* last = vertices.back();
+    for(vector<Point*>::iterator it = vertices.begin(); it != vertices.end(); ++it) {
+        surface += (*it)->distanceFrom(last);
+        last = (*it);
     }
 
     return surface;
