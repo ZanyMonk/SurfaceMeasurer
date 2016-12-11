@@ -3,14 +3,17 @@
 
 #include "solid.h"
 
+extern bool verbose;
 
 void* computeFaces(void* data)
 {
     double* r = new double(0.f);
     std::deque<Face*>* faces = (std::deque<Face*>*)data;
     for(size_t i = 0; i < faces->size(); i++) {
-        (*r) += faces->at(i)->computeSurface();
+        (*r) += Face::computeArea(faces->at(i));
+        std::cout << *r << std::endl;
     }
+
 
     delete faces;
 
@@ -34,7 +37,7 @@ Solid::Solid(std::string filepath) {
             nbFaces = stoi(infos[1]);
             nbEdges = stoi(infos[2]);
 
-            std::cout << "Loading vertices ..." << std::endl;
+            verbose && std::cout << "Loading vertices ..." << std::endl;
             Point	pointBuffer;
             Face	faceBuffer;
             bool    firstFace = true;
@@ -53,7 +56,7 @@ Solid::Solid(std::string filepath) {
                     points.push_back(pointBuffer);
                 } else {	// face coords
                     if(firstFace) {
-                        std::cout << "\rLoading faces ..." << std::endl;
+                        verbose && std::cout << "\rLoading faces ..." << std::endl;
                         firstFace = false;
                     }
 
@@ -103,7 +106,7 @@ double Solid::computeSurface() {
     double result = 0.f;
 
     for(Face f : faces) {
-        result += f.computeSurface();
+        result += Face::computeArea(&f);
     }
 
     return result;
@@ -111,16 +114,19 @@ double Solid::computeSurface() {
 
 double Solid::computeSurfaceWithThreads(int nbThreads)
 {
-    cout << "Start " << nbThreads << " threads." << endl;
-
     double result = 0.f;
+
+    // Build sections for each thread
+    int range = faces.size()/nbThreads;
+    if(range == 0) {
+        range = 1;
+        nbThreads = faces.size()-1;
+    }
+    int last = 0;
 
     std::vector<pthread_t>          threads(nbThreads);
     std::vector<std::deque<Face*>*> facesBunch;
 
-    // Build sections for each thread
-    int range = faces.size()/nbThreads;
-    int last = 0;
     for(size_t i = 0; i < nbThreads; i++) {
         last = (i+1)*range-1;
         if(last+range >= faces.size() && faces.size()-last > 0) {
@@ -157,12 +163,12 @@ double Solid::computeSurfaceWithThreads(int nbThreads)
 }
 
 double Solid::computeSurfaceWithOpenMP(){
-    double result = 0.f;
 
     //Combined Parallel Loop Reduction
 	#pragma omp parallel for reduction ( + : result )
-    for(long i = 0; i<= faces.size();i++) {
-        result += faces[i].computeSurface();
+    double result = 0.f;
+    for(long i = 0; i < faces.size(); i++) {
+        result += Face::computeArea(&faces[i]);
     }
 
     return result;

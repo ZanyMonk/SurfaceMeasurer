@@ -37,6 +37,8 @@ double Face::computeArea(Face *face) {
     }
 
     area /= 2;
+    
+    
 
     for(unsigned i = 0; i < face->nbVertices; i++) {
         area *= area-distances[i];

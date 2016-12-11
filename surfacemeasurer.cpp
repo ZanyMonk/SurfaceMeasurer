@@ -1,11 +1,11 @@
 #include "surfacemeasurer.h"
 
+extern bool verbose, timed, omp;
 const int SurfaceMeasurer::defaultNbThreads = 10;
 
 SurfaceMeasurer::SurfaceMeasurer(
     std::string filePath,
-    unsigned nbThreads,
-    bool openMP
+    unsigned nbThreads
 ) {
     std::chrono::time_point<std::chrono::system_clock> start, startProcess, end;
 
@@ -18,13 +18,13 @@ SurfaceMeasurer::SurfaceMeasurer(
     startProcess = std::chrono::system_clock::now();
 
     // Process data
-    if(openMP) {
-        cout << "Using OpenMP" << endl;
+    if(omp) {
+        verbose && std::cout << "Using OpenMP" << std::endl;
         r = solid->computeSurfaceWithOpenMP();
     } else if(nbThreads == 0) {
         r = solid->computeSurface();
     } else {
-        std::cout << "Calculating with " << nbThreads << " threads." << std::endl;
+        verbose && std::cout << "Calculating with " << nbThreads << " threads." << std::endl;
         r = solid->computeSurfaceWithThreads(nbThreads);
     }
 
@@ -34,11 +34,15 @@ SurfaceMeasurer::SurfaceMeasurer(
     std::chrono::duration<double> elapsedProcess = end-startProcess;
 
     std::cout.setf(ios::fixed);
-    std::cout << "This solid surface is " << r << std::endl
-              << "Processing time :  " << elapsedProcess.count() << "s" << std::endl
-              << "Loading time :     " << elapsed.count()-elapsedProcess.count() << "s" << std::endl
-              << "Total time :       " << elapsed.count() << "s" << std::endl
-              << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+    if(verbose) {
+        std::cout << "This solid surface is " << r << std::endl;
+    } else {
+        std::cout << r << std::endl;
+    }
+    timed && std::cout  << "Processing time :  " << elapsedProcess.count() << "s" << std::endl
+                        << "Loading time :     " << elapsed.count()-elapsedProcess.count() << "s" << std::endl
+                        << "Total time :       " << elapsed.count() << "s" << std::endl
+                        << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 }
 
 SurfaceMeasurer::~SurfaceMeasurer() {

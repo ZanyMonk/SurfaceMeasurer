@@ -17,7 +17,12 @@ public:
     void	clear();
     void	setVerticesNumber(size_t n);
     void	addVertex(Point* p);
-    double	computeSurface();
+    static double	computeArea(Face *face);
+
+    inline size_t size() { return nbVertices; }
+    inline Point* back() { return vertices.back(); }
+    inline vector<Point*>::const_iterator begin() { return vertices.cbegin(); }
+    inline vector<Point*>::const_iterator end() { return vertices.cend(); }
 };
 
 #endif
