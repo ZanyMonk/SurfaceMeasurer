@@ -11,7 +11,6 @@ void* computeFaces(void* data)
     std::deque<Face*>* faces = (std::deque<Face*>*)data;
     for(size_t i = 0; i < faces->size(); i++) {
         (*r) += Face::computeArea(faces->at(i));
-        std::cout << *r << std::endl;
     }
 
 

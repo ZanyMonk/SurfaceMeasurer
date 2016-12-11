@@ -36,10 +36,11 @@ double Face::computeArea(Face *face) {
         i++;
     }
 
-    area /= 2;
+    area /= 2.f;
+    double p = area;
 
     for(unsigned i = 0; i < face->nbVertices; i++) {
-        area *= area-distances[i];
+        area *= p-distances[i];
     }
 
     return sqrt(area);
