@@ -1,14 +1,11 @@
 #!/bin/bash
 
-for file in sphere locomotive man; do
-	echo "Sequentiel"
-	./SurfaceMeasurer -t 2 ../data/$file.off
-	# echo "2 threads"
-	# ./SurfaceMeasurer -t 2 ../data/teapot.off
-	# echo "4 threads"
-	# ./SurfaceMeasurer -t 4 ../data/teapot.off
-	# echo "8 threads"
-	# ./SurfaceMeasurer -t 8 ../data/teapot.off
-	# echo "OpenMP"
-	# ./SurfaceMeasurer -omp ../data/teapot.off
+for file in sphere teapot locomotive man bouddha1m; do
+	echo "### $file ###"
+	./SurfaceMeasurer -t 2 ../data/$file.off | grep Processing | sed 's/.* \([\.0-9]\+\)s/\1/'
+	./SurfaceMeasurer -t 2 ../data/$file.off | grep Processing | sed 's/.* \([\.0-9]\+\)s/\1/'
+	./SurfaceMeasurer -t 4 ../data/$file.off | grep Processing | sed 's/.* \([\.0-9]\+\)s/\1/'
+	./SurfaceMeasurer -t 8 ../data/$file.off | grep Processing | sed 's/.* \([\.0-9]\+\)s/\1/'
+	./SurfaceMeasurer -omp ../data/$file.off | grep Processing | sed 's/.* \([\.0-9]\+\)s/\1/'
+	echo -e "\n\n"
 done
