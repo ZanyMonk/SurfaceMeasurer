@@ -17,7 +17,7 @@ public:
     void	clear();
     void	setVerticesNumber(size_t n);
     void	addVertex(Point* p);
-    static double	computeArea(Face *face);
+    double	computeArea();
 
     inline size_t size() { return nbVertices; }
     inline Point* back() { return vertices.back(); }

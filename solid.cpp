@@ -1,6 +1,3 @@
-#include <fstream>
-#include <sstream>
-
 #include "solid.h"
 
 extern bool verbose;
@@ -10,7 +7,7 @@ void* computeFaces(void* data)
     double* r = new double(0.f);
     std::deque<Face*>* faces = (std::deque<Face*>*)data;
     for(size_t i = 0; i < faces->size(); i++) {
-        (*r) += Face::computeArea(faces->at(i));
+        (*r) += faces->at(i)->computeArea();
     }
 
     delete faces;
@@ -39,24 +36,27 @@ Solid::Solid(std::string filePath) {
             Point	pointBuffer;
             Face	faceBuffer;
             bool    firstFace = true;
+            unsigned i = 0;
 
             // Read points and faces definition
             while(getline(file, line)) {
-                // Check if line is a comment
-                if(line[0] == '#') {
-                        continue;
-                }
-
                 std::vector<std::string> v = splitLine(trimLine(line));
 
+                // Check if line is a comment
+                if(std::string("#").compare(v[0]) == 0) {
+                    continue;
+                }
+
                 // If not, treat the line as
-                if(isVertex(line)) {    // vertex coords
+                if(i < nbVertices) {    // vertex coords
                     pointBuffer.setPosition(v[0], v[1], v[2]);
                     points.push_back(pointBuffer);
                 } else {	// face coords
                     if(firstFace) {
                         verbose && std::cout << "\rLoading faces ..." << std::endl;
                         firstFace = false;
+                    } else if(i-nbVertices > nbFaces) {
+                        break;
                     }
 
                     size_t n = stoi(v[0]);
@@ -65,9 +65,9 @@ Solid::Solid(std::string filePath) {
                     for (size_t i = n+1; i > 1; i--) {
                         faceBuffer.addVertex(&points[stoi(v[i-1])]);
                     }
-                    std::cout  << std::endl;
                     faces.push_back(faceBuffer);
                 }
+                i++;
             }
         }
     } else {
@@ -106,7 +106,7 @@ double Solid::computeSurface() {
     double result = 0.f;
 
     for(Face f : faces) {
-        result += Face::computeArea(&f);
+        result += f.computeArea();
     }
 
     return result;
@@ -169,7 +169,7 @@ double Solid::computeSurfaceWithOpenMP(){
 	#pragma omp parallel for reduction ( + : result )
     double result = 0.f;
     for(long i = 0; i < faces.size(); i++) {
-        result += Face::computeArea(&faces[i]);
+        result += faces[i].computeArea();
     }
 
     return result;

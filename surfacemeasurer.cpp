@@ -40,8 +40,8 @@ SurfaceMeasurer::SurfaceMeasurer(
     } else {
         std::cout << r << std::endl;
     }
-    timed && std::cout  << "Processing time :  " << elapsedProcess.count() << "s" << std::endl
-                        << "Loading time :     " << elapsed.count()-elapsedProcess.count() << "s" << std::endl
+    timed && std::cout  << "Processing time :  " << elapsedProcess.count()*1000 << "ms" << std::endl
+                        << "Loading time :     " << (elapsed.count()-elapsedProcess.count())*1000 << "ms" << std::endl
                         << "Total time :       " << elapsed.count() << "s" << std::endl
                         << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 }
