@@ -34,6 +34,7 @@ public:
     Solid(std::string filePath);
 	~Solid();
     bool loadFile(std::string filePath);
+    std::vector<std::deque<Face *> *> dealFaces();
 
     double                      computeSurface();
     double                      computeSurfaceWithThreads(unsigned nbThreads);

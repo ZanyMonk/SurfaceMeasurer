@@ -108,11 +108,11 @@ void SurfaceMeasurer::runAnalysis()
     }
     verbose = tmpVerbose;
 
-    std::cout << "Sequential\t\t" << results[0] << std::endl;
-    std::cout << "2 Threads\t\t" << results[1] << std::endl;
-    std::cout << "4 Threads\t\t" << results[2] << std::endl;
-    std::cout << "8 Threads\t\t" << results[3] << std::endl;
-    std::cout << "OpenMP\t\t\t" << results[4] << std::endl;
+    std::cout << "Sequential     " << results[0] << std::endl;
+    std::cout << "2 Threads      " << results[1] << std::endl;
+    std::cout << "4 Threads      " << results[2] << std::endl;
+    std::cout << "8 Threads      " << results[3] << std::endl;
+    std::cout << "OpenMP         " << results[4] << std::endl;
 }
 
 void SurfaceMeasurer::usage() {

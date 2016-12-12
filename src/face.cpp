@@ -10,7 +10,7 @@ void Face::clear() {
     vertices.clear();
 }
 
-void Face::setVerticesNumber(size_t n) {
+void Face::setVerticesNumber(std::uintmax_t n) {
     nbVertices = n;
 }
 

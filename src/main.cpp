@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    for(size_t i = 1; i < argc; i++) {
+    for(std::uintmax_t i = 1; i < argc; i++) {
         std::ifstream f(argv[i]);
         if(f.is_open()) { // File exists ?
             SurfaceMeasurer sm(argv[i]);

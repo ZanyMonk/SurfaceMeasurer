@@ -30,6 +30,7 @@ double Point::distanceFrom(Point* p) {
     return sqrt(pow(p->x-x, 2)+pow(p->y-y, 2)+pow(p->z-z, 2));
 }
 
+// Debug purposes
 std::ostream& operator<<(std::ostream& _os, const Point & _p) {
     _os << "(" << _p.x <<"," << _p.y << "," << _p.z  << ")";
 
