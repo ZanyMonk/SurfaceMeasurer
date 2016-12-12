@@ -215,6 +215,8 @@ for(size_t i = 0; i < nbThreads; i++) {
 double result = 0.f;
 for(long i = 0; i < faces.size(); i++) {
     result += Face::computeArea(&faces[i]);
+
+La clause reduction permet de crée une copie privée pour chaque thread pour une opération donnée.
 }
 		\end{lstlisting}
 \newpage
@@ -228,6 +230,7 @@ for(long i = 0; i < faces.size(); i++) {
 	\begin{center}
 		\includegraphics[scale = 0.5]{graph_execTime_machine2.png}
 	\end{center}
+	
 	\subsection{Machine 3}
 	\begin{center}
 		\includegraphics[scale = 0.5]{graph_execTime_machine3.png}
