@@ -3,3 +3,6 @@ doc/*
 !doc/*.tex
 !doc/*.bib
 !doc/*.png
+build/*
+!build/build.sh
+!build/analysis.sh
