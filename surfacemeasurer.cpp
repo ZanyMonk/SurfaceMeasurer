@@ -117,7 +117,9 @@ void SurfaceMeasurer::runAnalysis()
 
 void SurfaceMeasurer::usage() {
     std::cout << "SurfaceMeasurer" << std::endl;
-    std::cout << "Usage :\tSurfaceMeasurer [-t N] <file>" << std::endl;
-    std::cout << "<file>\t\tPath to an OFF file" << std::endl;
-    std::cout << "-t N\t\tUse N threads" << std::endl;
+    std::cout << "Usage :\tSurfaceMeasurer [[--threads N|--threads 0|--openmp] [--no-time]|--analysis] <file>" << std::endl;
+    std::cout << "<file>             Path to an OFF file" << std::endl;
+    std::cout << "-t, --threads N    Use N threads" << std::endl;
+    std::cout << "-T, --no-time      No time measure" << std::endl;
+    std::cout << "-a, --analysis     Run analysis" << std::endl;
 }

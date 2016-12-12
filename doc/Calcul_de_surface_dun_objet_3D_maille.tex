@@ -51,7 +51,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \chead{\thetitle}
-\cfoot{\thepage}
+\cfoot{\raggedleft\thepage}
 \begin{document}
 
 \begin{titlepage}
@@ -78,11 +78,12 @@
 	\end{minipage}\\[2 cm]
 
 	\vfill
-
 \end{titlepage}
+\pagestyle{empty}
 \tableofcontents
 \pagebreak
-
+\pagestyle{fancy}
+\setcounter{page}{1}
 \section{Introduction}
 L'objectif consiste en l'optimisation, par parallèlisation, du calcul de la surface d'un objet 3D maillé (triangles) au format OFF\cite{OFF} à l'aide de la formule de Héron\cite{heron}.
 
@@ -215,11 +216,10 @@ for(size_t i = 0; i < nbThreads; i++) {
 double result = 0.f;
 for(long i = 0; i < faces.size(); i++) {
     result += Face::computeArea(&faces[i]);
-
-La clause reduction permet de crée une copie privée pour chaque thread pour une opération donnée.
 }
 		\end{lstlisting}
-\newpage
+		La clause \texttt{reduction} permet de crée une copie privée pour chaque thread pour une opération donnée.
+
 \section{Résultats}
 	\subsection{Machine 1}
 	\begin{center}
@@ -230,7 +230,7 @@ La clause reduction permet de crée une copie privée pour chaque thread pour un
 	\begin{center}
 		\includegraphics[scale = 0.5]{graph_execTime_machine2.png}
 	\end{center}
-	
+
 	\subsection{Machine 3}
 	\begin{center}
 		\includegraphics[scale = 0.5]{graph_execTime_machine3.png}
@@ -242,8 +242,7 @@ D'après les tests que nous avons effectués, nous constatons que le temps de ca
 
 L'implémentation OpenMP ne semble pas appropriée à cette tâche au vu des temps d'exécution équivalents ou peu meilleurs comparées à ceux de l'implémentation séquentielle.
 
-Il est également surprenant que la machine 2 affiche des temps si faible alors que la configuration est supérieure.
-
+On peut également noter que la machine 2 affiche des temps d'exécution plus élevés que ceux des machines 1 et 3 alors que la configuration est supérieure à celle de ces deux machines.
 \newpage
 \bibliographystyle{unsrt}
 \bibliography{biblio}

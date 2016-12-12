@@ -19,6 +19,9 @@ int main(int argc, char** argv) {
         if(f.is_open()) { // File exists ?
             SurfaceMeasurer sm(argv[i]);
             return 0;
+        } else if(strcmp("-h", argv[i]) == 0 || strcmp("--help", argv[i]) == 0) {
+            SurfaceMeasurer::usage();
+            return 0;
         } else if(strcmp("-omp", argv[i]) == 0 || strcmp("--openmp", argv[i]) == 0) {
             omp = true;
         } else if(strcmp("-t", argv[i]) == 0 || strcmp("--threads", argv[i]) == 0) {
