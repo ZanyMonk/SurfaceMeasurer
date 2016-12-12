@@ -192,10 +192,11 @@ double Solid::computeSurfaceWithThreads(unsigned nbThreads)
 double Solid::computeSurfaceWithOpenMP(){
     extern unsigned nbThreads;
 
+    double result = 0.f;
+
     //Combined Parallel Loop Reduction
     omp_set_num_threads(nbThreads);
-    #pragma omp parallel
-    double result = 0.f;
+    #pragma omp parallel for reduction ( + : result )
     for(unsigned i = 0; i < faces.size(); i++) {
         double r = faces[i].computeArea();
         result += r;
