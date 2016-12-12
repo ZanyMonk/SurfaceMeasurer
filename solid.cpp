@@ -15,7 +15,16 @@ void* computeFaces(void* data)
     return r;
 }
 
+Solid::Solid() { }
+
 Solid::Solid(std::string filePath) {
+    loadFile(filePath);
+}
+
+Solid::~Solid() { }
+
+bool Solid::loadFile(std::__cxx11::string filePath)
+{
     std::string line;
     std::ifstream file;
     file.open(filePath);
@@ -76,8 +85,6 @@ Solid::Solid(std::string filePath) {
 
     file.close();
 }
-
-Solid::~Solid() { }
 
 std::vector<std::string> Solid::splitLine(std::string s) {
     std::stringstream stream;
@@ -168,8 +175,9 @@ double Solid::computeSurfaceWithOpenMP(){
     //Combined Parallel Loop Reduction
 	#pragma omp parallel for reduction ( + : result )
     double result = 0.f;
-    for(long i = 0; i < faces.size(); i++) {
-        result += faces[i].computeArea();
+    for(unsigned i = 0; i < faces.size(); i++) {
+        double r = faces[i].computeArea();
+        result += r;
     }
 
     return result;

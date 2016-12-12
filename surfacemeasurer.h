@@ -10,14 +10,16 @@
 class SurfaceMeasurer
 {
 private:
-    Solid solid;
+    Solid *solid;
 
 public:
     static const int    defaultNbThreads;
 
     SurfaceMeasurer();
-    SurfaceMeasurer(std::string filePath, unsigned nbThreads);
+    SurfaceMeasurer(std::string filePath);
     ~SurfaceMeasurer();
+    double processSolid();
+    void runAnalysis();
 
     static void usage();
 };

@@ -33,10 +33,13 @@ public:
 	Solid();
     Solid(std::string filePath);
 	~Solid();
+    bool loadFile(std::string filePath);
 
     double                      computeSurface();
     double                      computeSurfaceWithThreads(unsigned nbThreads);
 	double						computeSurfaceWithOpenMP();
+
+    inline unsigned getNbFaces() { return nbFaces; }
 };
 
 #endif
