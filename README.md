@@ -3,7 +3,6 @@
 
 ## Compilation
 ```sh
-cd build
 ./build.sh
 ```
 
